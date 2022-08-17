@@ -18,11 +18,16 @@ float smallFactor = 0.4 ,xr=1 ,yr=1 ,zr=0 ;
 
 void myInit ()
 {
+    // Creating basic layout
+    
     glClearColor( 0.212 ,0.271,0.31, 1);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    
+    // it is the size of out virtual world
     glOrtho(0, 500, 0, 500, -10.0, 10.0);
     
+    // For 3d objects we have to add this
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -69,6 +74,7 @@ void Spin(){
 
 void display ()
 {
+    // coordinates of the object which will be created
     GLfloat v[8][3] =
     {
         {-0.5, 0.5, 0.5},
@@ -87,6 +93,9 @@ void display ()
     glLoadIdentity();
     
    
+    // We don't want to rotate the environment. We just want to rotate the object
+    // For this we just pust this in a matrix and rotate it, then we pop it in out virtual world
+    // With out this method our whole virtual environment will rotate with the cube.
     glPushMatrix();
        
         glRotatef(spin, xr, yr, zr);
@@ -254,6 +263,7 @@ void my_keyboard(unsigned char key, int x, int y)
 int main (int argc, char** argv)
 {
     glutInit(&argc, argv);
+    // GLUT_DEPTH is added for working with 3d object
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     
     glutInitWindowSize(900, 900);
@@ -263,8 +273,13 @@ int main (int argc, char** argv)
    
     myInit();
     
+    // creating the objects which will be shown after running this app
     glutDisplayFunc(display);
+    
+    // Keyboard controlls 
     glutKeyboardFunc(my_keyboard);
     
+    // with out this the program will be terminated after running just once
+    // but we want to run it intill we press 'y'
     glutMainLoop();
 }
